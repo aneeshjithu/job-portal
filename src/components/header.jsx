@@ -31,8 +31,6 @@ const Header = () => {
     }
   };
 
-
-
   return (
     <>
       <nav className="flex justify-between items-center my-2 mr-2">
@@ -40,13 +38,6 @@ const Header = () => {
           <img src="/pool.png" className="h-14 w-32" />
         </Link>
 
-        {/* <SignedOut>
-          <SignInButton>
-            <ShinyButton variant="outline" onClick={() => setShowSignIn(true)}>
-              Login
-            </ShinyButton>
-          </SignInButton>
-        </SignedOut> */}
         <div className="flex gap-8">
           <SignedOut>
             <ShinyButton variant="outline" onClick={() => setShowSignIn(true)}>
