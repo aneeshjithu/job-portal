@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "heading": "About D-Pool",
+    "question": "What is D-Pool?",
+    "answer": "D-Pool is Deadpool’s very own job portal that allows companies (even evil ones) to post job listings and lets mercenaries and other skilled individuals search and apply for jobs. Whether you want to be a hero for hire or just look for a chill desk job, D-Pool has got you covered."
+  },
+  {
+    "id": 2,
+    "heading": "Posting Jobs",
+    "question": "How do I post a job?",
+    "answer": "As an employer (or evil genius), log in and head over to the 'Post Job' section. Fill out the details of your 'mission' or 'job' and submit it. Just don’t expect Deadpool to always say yes."
+  },
+  {
+    "id": 3,
+    "heading": "Searching Jobs",
+    "question": "How can I search for jobs?",
+    "answer": "Use the search bar or filters to find the job that fits your skills, whether it’s saving the world, hunting bad guys, or making sarcastic remarks all day."
+  },
+  {
+    "id": 4,
+    "heading": "Applying for Jobs",
+    "question": "How do I apply for a job?",
+    "answer": "Found your dream job? Great! Click the listing and follow the instructions. You might have to upload your resume or portfolio of epic fights and one-liners."
+  },
+  {
+    "id": 5,
+    "heading": "Saving Jobs",
+    "question": "Can I save jobs to apply later?",
+    "answer": "Of course! Just hit the 'Save Job' button. Your saved jobs can be found under the 'Saved Jobs' section in your profile. Even Deadpool forgets stuff sometimes."
+  },
+  {
+    "id": 6,
+    "heading": "Tracking Applications",
+    "question": "How do I track my job applications?",
+    "answer": "You can track your job applications under the 'Applications' section in your profile. Keep an eye out for responses from employers or mysterious shadow organizations."
+  }
+]
