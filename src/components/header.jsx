@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "./ui/button";
+import "../App.css";
 import {
   SignedIn,
   SignedOut,
@@ -11,6 +12,7 @@ import {
 } from "@clerk/clerk-react";
 import ShinyButton from "./ui/shiny-button";
 import { BriefcaseBusiness, Heart, PenBox } from "lucide-react";
+import ImageGlow from "react-image-glow";
 
 const Header = () => {
   const [showSignIn, setShowSignIn] = useState(false);
@@ -33,7 +35,7 @@ const Header = () => {
 
   return (
     <>
-      <nav className="flex justify-between items-center my-2 mr-2">
+      <nav className="flex justify-between items-center ">
         <Link>
           <img src="/pool.png" className="h-14 w-32" />
         </Link>

@@ -1,7 +1,20 @@
+import { getCompanies } from "@/api/apiCompanies";
 import { getJobs } from "@/api/apiJobs";
 import JobCard from "@/components/job-card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import useFetch from "@/hooks/use-fetch";
 import { useSession } from "@clerk/clerk-react";
+import { State } from "country-state-city";
 import React, { useEffect, useRef, useState } from "react";
 import { BarLoader } from "react-spinners";
 
@@ -21,6 +34,8 @@ const JobListing = () => {
     searchQuery,
   });
 
+  const { fn: fnCompanies, data: dataCompanies } = useFetch(getCompanies);
+
   const hasFetched = useRef(false); // Flag to prevent multiple calls
 
   useEffect(() => {
@@ -29,6 +44,56 @@ const JobListing = () => {
       hasFetched.current = true; // Set the flag to true after first call
     }
   }, [isLoaded, session, location, company_id, searchQuery]); // Removed fnJobs from dependencies
+
+  const hasFetchedCmpny = useRef(false); // Flag to prevent multiple calls
+
+  useEffect(() => {
+    if (isLoaded && session && !hasFetchedCmpny.current) {
+      fnCompanies();
+      hasFetchedCmpny.current = true; // Set the flag to true after first call
+    }
+  }, [isLoaded, session, location, company_id, searchQuery]); // Removed fnJobs from dependencies
+
+  useEffect(() => {
+    if (searchQuery) {
+      console.log("Updated search query:", searchQuery);
+      fnJobs(); // Optionally refetch jobs if needed
+    }
+  }, [searchQuery]);
+
+  // const handleSearch = (e) => {
+  //   e.preventDefault();
+  //   let formData = new FormData(e.target);
+
+  //   const query = formData.get("search-query");
+
+  //   if (query) setSearchQuery(query);
+  //   console.log(searchQuery);
+  // };
+  const handleSearch = (e) => {
+    e.preventDefault();
+    let formData = new FormData(e.target);
+
+    const query = formData.get("search-query");
+
+    console.log(query);
+    if (query) {
+      setSearchQuery(query);
+      // Move the console log inside a useEffect to log the updated state
+    } else {
+      setSearchQuery(""); // Clear the search query
+      fnJobs({ location, company_id, searchQuery: "" });
+    }
+  };
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    console.log("trimval" + value.trim());
+    if (!value.trim()) {
+      // Call fnJobs when the input is empty
+      fnJobs({ location, company_id, searchQuery: "" });
+    }
+  };
 
   if (!isLoaded) {
     return (
@@ -40,6 +105,59 @@ const JobListing = () => {
       <h1 className="gradient-title font-extrabold text-4xl sm:text-7xl text-center pb-5 pt-3">
         Latest Jobs
       </h1>
+
+      <form
+        onSubmit={handleSearch}
+        className="flex h-14 w-full gap-2 items-center  mb-3"
+      >
+        <Input
+          type="text"
+          placeholder="Search..."
+          name="search-query"
+          className="h-full flex-1 px-4 text-md"
+          onChange={handleSearchChange}
+        ></Input>
+        <Button type="submit" className="h-full sm:w-28 " variant="blue">
+          Search
+        </Button>
+      </form>
+      <div>
+        <Select value={location} onValueChange={(value) => setLocation(value)}>
+          <SelectTrigger>
+            <SelectValue placeholder="Filter by Location" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {State.getStatesOfCountry("IN").map(({ name }) => {
+                return (
+                  <SelectItem key={name} value={name}>
+                    {name}
+                  </SelectItem>
+                );
+              })}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+        <Select
+          value={company_id}
+          onValueChange={(value) => setCompany_id(value)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Filter by Company" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {dataCompanies &&
+                dataCompanies.length > 0 &&
+                dataCompanies.map(({ name, id }) => (
+                  <SelectItem key={id} value={id}>
+                    {name}
+                  </SelectItem>
+                ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
       {jobLoading && (
         <BarLoader
           className="mb-4"
@@ -54,9 +172,12 @@ const JobListing = () => {
           {dataJobs?.length ? (
             dataJobs.map((job) => (
               <JobCard
+                // key={job.id}
+                // job={job}
+                // savedInit={job?.saved_jobs?.length > 0 ?? false}
                 key={job.id}
                 job={job}
-                savedInit={job?.saved_jobs?.length > 0 ?? false}
+                savedInit={job?.saved_jobs?.length > 0}
               />
             ))
           ) : (

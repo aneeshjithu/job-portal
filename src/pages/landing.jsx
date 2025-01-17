@@ -18,10 +18,8 @@ import {
 } from "@/components/ui/accordion";
 import { ChevronRight } from "lucide-react";
 import AnimatedShinyText from "@/components/ui/animated-shiny-text";
-import { TextShimmer } from "@/components/ui/text-shimmer";
 import { BorderTrail } from "@/components/ui/border-trail";
-
-import { TextEffect } from "@/components/ui/text-effect";
+import ImageGlow from "react-image-glow";
 
 const LandingPage = () => {
   return (
@@ -71,6 +69,7 @@ const LandingPage = () => {
           </CarouselContent>
         </Carousel>
       </div>
+
       <img src="/deadpoolbanner.png" alt="banner pool" />
 
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 tracking-normal ">
@@ -80,11 +79,7 @@ const LandingPage = () => {
               <CardTitle>For Job Seekers</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>
-                <TextEffect per="word" delay={0} speed={1}>
-                  Search and apply for jobs ,track applications,and more...
-                </TextEffect>
-              </p>
+              <p>Search and apply for jobs ,track applications,and more...</p>
             </CardContent>
           </Card>
           <BorderTrail
@@ -98,11 +93,7 @@ const LandingPage = () => {
               <CardTitle> For Employers</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>
-                <TextEffect per="word" delay={0}>
-                  Post job,manage applications, and find the best candidate
-                </TextEffect>
-              </p>
+              <p>Post job,manage applications, and find the best candidate</p>
             </CardContent>
           </Card>
           <BorderTrail
