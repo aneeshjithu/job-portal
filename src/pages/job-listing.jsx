@@ -76,7 +76,6 @@ const JobListing = () => {
 
     const query = formData.get("search-query");
 
-    console.log(query);
     if (query) {
       setSearchQuery(query);
       // Move the console log inside a useEffect to log the updated state
@@ -88,11 +87,16 @@ const JobListing = () => {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchQuery(value);
-    console.log("trimval" + value.trim());
-    if (!value.trim()) {
+    if (value === "" || value === null || value === undefined) {
       // Call fnJobs when the input is empty
       fnJobs({ location, company_id, searchQuery: "" });
     }
+  };
+
+  const handleClearFilters = () => {
+    setLocation("");
+    setCompany_id("");
+    setSearchQuery("");
   };
 
   if (!isLoaded) {
@@ -108,20 +112,20 @@ const JobListing = () => {
 
       <form
         onSubmit={handleSearch}
-        className="flex h-14 w-full gap-2 items-center  mb-3"
+        className="flex h-14 w-full gap-3 items-center  mb-3"
       >
         <Input
           type="text"
           placeholder="Search..."
           name="search-query"
-          className="h-full flex-1 px-4 text-md"
+          className="max-h-10 flex-1 px-4 text-md"
           onChange={handleSearchChange}
         ></Input>
-        <Button type="submit" className="h-full sm:w-28 " variant="blue">
+        <Button type="submit" className="h-10 sm:w-28 " variant="blue">
           Search
         </Button>
       </form>
-      <div>
+      <div className="flex flex-col sm:flex-row gap-3">
         <Select value={location} onValueChange={(value) => setLocation(value)}>
           <SelectTrigger>
             <SelectValue placeholder="Filter by Location" />
@@ -157,10 +161,17 @@ const JobListing = () => {
             </SelectGroup>
           </SelectContent>
         </Select>
+        <Button
+          onClick={handleClearFilters}
+          variant="destructive"
+          className="sm:w-1/2"
+        >
+          Clear Filters
+        </Button>
       </div>
       {jobLoading && (
         <BarLoader
-          className="mb-4"
+          className="mb-4 my-3"
           height={0.8}
           width={"100%"}
           color="#ff2c2c"
