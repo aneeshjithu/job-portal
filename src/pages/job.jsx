@@ -1,14 +1,25 @@
-import { getSingleJob } from "@/api/apiJobs";
+import { getSingleJob, updateHiringStatus } from "@/api/apiJobs";
 import useFetch from "@/hooks/use-fetch";
 import { useUser } from "@clerk/clerk-react";
 import { Briefcase, DoorClosed, DoorOpen, MapPinIcon } from "lucide-react";
 import React, { useEffect } from "react";
+
+import { debounce } from "lodash";
 import { useParams } from "react-router-dom";
 import { BarLoader } from "react-spinners";
 import MDEditor from "@uiw/react-md-editor";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import ApplyJobDrawer from "@/components/apply-job";
 
 const Job = () => {
-  const { isLoaded, user } = useUser();
+  const { isLoaded, user, session } = useUser();
   const { id } = useParams();
 
   const {
@@ -19,6 +30,41 @@ const Job = () => {
   } = useFetch(getSingleJob, {
     job_id: id,
   });
+
+  const {
+    fn: fnHiringStatus,
+    data: dataHiringStatus,
+    loading: HiringStatusLoading,
+    error: HiringStatusError,
+  } = useFetch(updateHiringStatus, {
+    job_id: id,
+  });
+
+  // const handleStatusChange = async (value) => {
+  //   const isOpen = value === "open";
+
+  //   // Optimistically update the UI
+  //   const previousStatus = dataJob?.isOpen;
+  //   dataJob.isOpen = isOpen;
+
+  //   try {
+  //     await fnHiringStatus(isOpen); // Make the API call
+  //     await fnJob(); // Re-fetch the job data
+  //   } catch (error) {
+  //     console.error("Error updating hiring status:", error);
+  //     dataJob.isOpen = previousStatus; // Rollback if API fails
+  //   }
+  // };
+
+  const handleStatusChange = debounce(async (value) => {
+    const isOpen = value === "open";
+    try {
+      await fnHiringStatus(isOpen);
+      await fnJob();
+    } catch (error) {
+      console.error("Error updating hiring status:", error);
+    }
+  }, 300); // 300ms debounce delay
 
   useEffect(() => {
     if (isLoaded) {
@@ -51,7 +97,7 @@ const Job = () => {
         </div>
         <div className="flex gap-2">
           <Briefcase />
-          {dataJob?.application?.length} Applicants
+          {dataJob?.applications?.length} Applicants
         </div>
         <div className="flex gap-2">
           {dataJob?.isOpen ? (
@@ -68,7 +114,32 @@ const Job = () => {
         </div>
       </div>
 
-      {/* hiring status */}
+      {user?.id === dataJob?.recruiter_id && (
+        <Select onValueChange={handleStatusChange}>
+          <SelectTrigger
+            className={`w-full ${
+              dataJob?.isOpen ? "bg-green-900" : "bg-red-800"
+            }`}
+          >
+            <SelectValue
+              className=""
+              placeholder={
+                "Hiring Status " + (dataJob?.isOpen ? "(Open)" : "(Closed)")
+              }
+            />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem className="mb-3" value="open">
+                Open
+              </SelectItem>
+              <SelectItem className="mb-3" value="closed">
+                Closed
+              </SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      )}
 
       <h2 className="text-2xl sm:text-3xl font-bold">About the job</h2>
       <p className="sm:text-lg">{dataJob?.description}</p>
@@ -82,6 +153,17 @@ const Job = () => {
       />
 
       {/* render applications */}
+
+      {dataJob?.recruiter_id !== user?.id && (
+        <ApplyJobDrawer
+          job={dataJob !== undefined ? dataJob : null}
+          user={user}
+          fetchJob={fnJob}
+          applied={dataJob?.applications?.find(
+            (app) => app?.candidate_id === user?.id
+          )}
+        />
+      )}
     </div>
   );
 };

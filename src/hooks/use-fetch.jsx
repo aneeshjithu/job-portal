@@ -92,9 +92,9 @@ const useFetch = (cb, options = {}) => {
         const supabaseAccessToken = await session.getToken({
           template: "supabase",
         });
-
+        console.log("calling api is : ", cb.name);
         const response = await cb(supabaseAccessToken, options, ...args);
-        console.log("response", response);
+        console.log("api response", response);
         setData(response);
       } catch (error) {
         setError(error);

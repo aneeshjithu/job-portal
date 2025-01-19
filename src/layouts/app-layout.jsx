@@ -1,42 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import "../App.css";
 import Header from "@/components/header";
 import { TextScramble } from "@/components/ui/text-scramble";
+import confetti from "canvas-confetti";
 
 const AppLayout = () => {
+  const [glowFooter, setglowFooter] = useState(false);
+
+  const handleGlowFooter = () => {
+    setglowFooter(!glowFooter);
+  };
+
+  const handleConfettyClick = () => {
+    const end = Date.now() + 3 * 1000; // 3 seconds
+    const colors = ["#880808", "#EE4B2B", "#D22B2B", "#D2042D", "#E35335"];
+
+    const frame = () => {
+      if (Date.now() > end) return;
+
+      confetti({
+        particleCount: 5,
+        angle: 70,
+        spread: 70,
+        startVelocity: 60,
+        origin: { x: 0, y: 1 },
+        colors: colors,
+      });
+      confetti({
+        particleCount: 5,
+        angle: 120,
+        spread: 70,
+        startVelocity: 60,
+        origin: { x: 1, y: 1 },
+        colors: colors,
+      });
+
+      requestAnimationFrame(frame);
+    };
+
+    frame();
+  };
+
   return (
     <>
       <div className="grid-background"></div>
-      <main className="min-h-screen m-3">
+      <main className="min-h-screen m-2">
         <Header />
         <Outlet />
       </main>
-      {/* <div className="bg-zinc-800 flex w-full justify-center items-center pl-1 pr-1 pt-1 mt-1"> */}
-      <div className="flex w-full justify-center items-center pl-1 pr-1 pt-1 mt-1 text-white hover:shadow-[0_0_10px_rgba(255,0,0,10)] transition-shadow duration-300">
+
+      <div className="flex w-full justify-center items-center pl-1 pr-1 pt-1 mt-1 text-white transition-shadow duration-300 relative">
         <TextScramble className="font-mono text-sm uppercase text-zinc-400 hover:text-white">
           First React Fullstack Project
         </TextScramble>
-        {/* <div class="text-2xl font-bold text-white hover:shadow-[0_0_10px_rgba(255,255,255,0.8)] transition-shadow duration-300">
-          Hover me for a glow effect!
-        </div> */}
         <img
           className="w-1/6 lg:w-12 relative right-1 max-w-14 object-contain duration-75"
           src="./footerPool.png"
           alt="footer pool"
+          onClick={handleConfettyClick}
         />
-        {/* <ImageGlow
-          radius={500}
-          saturation={10}
-          opacity={0.8}
-          className="w-8 h-8" // Ensure the glow doesn't change the size
-        >
-          <img
-            className="w-1/6 lg:w-12  right-1 hover:animate-spin max-w-14 object-contain"
-            src="./footerPool.png"
-            alt="footer pool"
-          />
-        </ImageGlow> */}
       </div>
     </>
   );

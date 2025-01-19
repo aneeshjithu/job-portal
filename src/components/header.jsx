@@ -12,7 +12,6 @@ import {
 } from "@clerk/clerk-react";
 import ShinyButton from "./ui/shiny-button";
 import { BriefcaseBusiness, Heart, PenBox } from "lucide-react";
-import ImageGlow from "react-image-glow";
 
 const Header = () => {
   const [showSignIn, setShowSignIn] = useState(false);
