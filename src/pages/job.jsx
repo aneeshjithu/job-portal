@@ -5,7 +5,7 @@ import { Briefcase, DoorClosed, DoorOpen, MapPinIcon } from "lucide-react";
 import React, { useEffect } from "react";
 
 import { debounce } from "lodash";
-import { useParams } from "react-router-dom";
+import { data, useParams } from "react-router-dom";
 import { BarLoader } from "react-spinners";
 import MDEditor from "@uiw/react-md-editor";
 import {
@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import ApplyJobDrawer from "@/components/apply-job";
+import ApplicationCard from "@/components/application-card";
 
 const Job = () => {
   const { isLoaded, user, session } = useUser();
@@ -164,6 +165,17 @@ const Job = () => {
           )}
         />
       )}
+
+      {dataJob?.recruiter_id === user?.id &&
+        dataJob?.applications?.length > 0 && (
+          <div className="flex flex-col gap-2">
+            <h2 className="text-2xl sm:text-3xl font-bold">Applications</h2>
+
+            {dataJob?.applications?.map((app) => {
+              return <ApplicationCard key={app?.id} application={app} />;
+            })}
+          </div>
+        )}
     </div>
   );
 };

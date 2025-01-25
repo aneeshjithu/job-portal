@@ -11,7 +11,8 @@ import { Heart, MapPinIcon, Trash2Icon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
 import useFetch from "@/hooks/use-fetch";
-import { saveJob } from "@/api/apiJobs";
+import { deleteJob, saveJob } from "@/api/apiJobs";
+import { BarLoader } from "react-spinners";
 const JobCard = ({
   job,
   isMyJob = false,
@@ -31,6 +32,24 @@ const JobCard = ({
     alreadysaved: saved,
   });
 
+  const {
+    fn: fnDeleteJob,
+    data: dataDeleteJob,
+    loading: loadingDeleteJob,
+    error: deleteJobError,
+  } = useFetch(deleteJob, {
+    job_id: job.id,
+  });
+
+  const handleDeleteJob = async () => {
+    try {
+      await fnDeleteJob();
+      onJobSaved();
+    } catch (error) {
+      console.error("Failed to delete job", error);
+    }
+  };
+
   const handleSaveJob = async () => {
     try {
       await fnSavedJob({ job_id: job.id, user_id: user.id });
@@ -48,6 +67,14 @@ const JobCard = ({
 
   return (
     <Card className="flex flex-col">
+      {loadingDeleteJob && (
+        <BarLoader
+          className="mb-4"
+          height={0.8}
+          width={"100%"}
+          color="#ff2c2c"
+        />
+      )}
       <CardHeader>
         <CardTitle className="flex justify-between font-bold">
           {job.title}
@@ -56,6 +83,7 @@ const JobCard = ({
               fill="red"
               size={18}
               className="text-red-300 cursor-pointer"
+              onClick={handleDeleteJob}
             ></Trash2Icon>
           )}
         </CardTitle>
@@ -71,7 +99,6 @@ const JobCard = ({
         <hr />
         {job.description.substring(0, job.description.indexOf("."))}
       </CardContent>
-
       <CardFooter className="flex-gap-2">
         <Link to={`/job/${job.id}`} className="flex-1">
           <Button variant="secondary" className="w-full">

@@ -10,7 +10,7 @@ import {
   DrawerTrigger,
 } from "./ui/drawer";
 import { Button } from "./ui/button";
-import { Controller, Form, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { Input } from "./ui/input";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Label } from "./ui/label";
@@ -61,7 +61,7 @@ const ApplyJobDrawer = ({ job, user, fetchJob, applied = false }) => {
       ...data,
       candidate_id: user.id,
       job_id: job.id,
-      name: user.fullname,
+      name: user.fullName,
       status: "applied",
       resume: data.resume[0],
     }).then(() => {
@@ -168,6 +168,7 @@ const ApplyJobDrawer = ({ job, user, fetchJob, applied = false }) => {
             Apply
           </Button>
         </form>
+
         <DrawerFooter>
           <DrawerClose asChild>
             <Button variant="outline">Cancel</Button>

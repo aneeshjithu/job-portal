@@ -4,14 +4,9 @@ import "../App.css";
 import Header from "@/components/header";
 import { TextScramble } from "@/components/ui/text-scramble";
 import confetti from "canvas-confetti";
+import { ModeToggle } from "@/components/mode-toggle";
 
 const AppLayout = () => {
-  const [glowFooter, setglowFooter] = useState(false);
-
-  const handleGlowFooter = () => {
-    setglowFooter(!glowFooter);
-  };
-
   const handleConfettyClick = () => {
     const end = Date.now() + 3 * 1000; // 3 seconds
     const colors = ["#880808", "#EE4B2B", "#D22B2B", "#D2042D", "#E35335"];
@@ -55,11 +50,14 @@ const AppLayout = () => {
           First React Fullstack Project
         </TextScramble>
         <img
-          className="w-1/6 lg:w-12 relative right-1 max-w-14 object-contain duration-75"
+          className="cursor-pointer w-1/6 lg:w-12 relative right-1 max-w-14 object-contain duration-75"
           src="./footerPool.png"
           alt="footer pool"
           onClick={handleConfettyClick}
         />
+        <div className="absolute bottom-2 right-4 w-9 h-9">
+          {/* <ModeToggle /> */}
+        </div>
       </div>
     </>
   );
