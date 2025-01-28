@@ -17,7 +17,7 @@ import { useSession } from "@clerk/clerk-react";
 import { State } from "country-state-city";
 import React, { useEffect, useRef, useState } from "react";
 import { BarLoader } from "react-spinners";
-
+import { toast } from "@/hooks/use-toast";
 const JobListing = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [location, setLocation] = useState("");
@@ -94,6 +94,24 @@ const JobListing = () => {
   };
 
   const handleClearFilters = () => {
+    if (location || company_id) {
+      toast({
+        variant: "success",
+        className:
+          "bg-slate-500 px-4 py-2 bg-opacity-70 rounded-md text-sm  truncate flex items-center justify-center",
+        description: "Removed Filters.",
+        duration: 1500,
+      });
+    } else {
+      toast({
+        variant: "success",
+        className:
+          "bg-slate-500 px-4 py-2 bg-opacity-70 rounded-md text-sm  truncate flex items-center justify-center",
+        description: "No Filters found.",
+        duration: 1500,
+      });
+    }
+
     setLocation("");
     setCompany_id("");
     setSearchQuery("");

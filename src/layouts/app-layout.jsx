@@ -1,10 +1,10 @@
-import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import "../App.css";
 import Header from "@/components/header";
 import { TextScramble } from "@/components/ui/text-scramble";
 import confetti from "canvas-confetti";
 import { ModeToggle } from "@/components/mode-toggle";
+import { Toaster } from "@/components/ui/toaster";
 
 const AppLayout = () => {
   const handleConfettyClick = () => {
@@ -46,19 +46,22 @@ const AppLayout = () => {
       </main>
 
       <div className="flex w-full justify-center items-center pl-1 pr-1 pt-1 mt-1 text-white transition-shadow duration-300 relative">
-        <TextScramble className="font-mono text-sm uppercase text-zinc-400 hover:text-white">
+        <TextScramble className="font-mono text-sm uppercase text-white hover:text-white">
           First React Fullstack Project
         </TextScramble>
+
         <img
           className="cursor-pointer w-1/6 lg:w-12 relative right-1 max-w-14 object-contain duration-75"
           src="./footerPool.png"
           alt="footer pool"
           onClick={handleConfettyClick}
         />
-        <div className="absolute bottom-2 right-4 w-9 h-9">
-          {/* <ModeToggle /> */}
+        <div className="absolute bottom-2 right-4 w-9 h-9 rounded-full flex items-center justify-center">
+          <ModeToggle />
         </div>
       </div>
+
+      <Toaster position="bottom-right" />
     </>
   );
 };

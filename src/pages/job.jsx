@@ -119,7 +119,9 @@ const Job = () => {
         <Select onValueChange={handleStatusChange}>
           <SelectTrigger
             className={`w-full ${
-              dataJob?.isOpen ? "bg-green-900" : "bg-red-800"
+              dataJob?.isOpen
+                ? "bg-green-500 opacity-80"
+                : "bg-red-500 opacity-80"
             }`}
           >
             <SelectValue

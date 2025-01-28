@@ -25,7 +25,12 @@ const CreatedApplications = () => {
       <BarLoader className="mb-4" height={0.8} width={"100%"} color="#ff2c2c" />
     );
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 mt-2">
+      {Array.isArray(dataApplications) && dataApplications.length === 0 && (
+        <div className="text-center m-10">
+          <h1>No applications found.</h1>
+        </div>
+      )}
       {dataApplications?.map((app) => {
         return <ApplicationCard key={app?.id} application={app} isCandidate />;
       })}

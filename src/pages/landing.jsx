@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import companies from "@/data/companies.json";
 import faq from "@/data/faq.json";
+import "../index.css";
 
 import {
   Carousel,
@@ -19,9 +20,95 @@ import {
 import { ChevronRight } from "lucide-react";
 import AnimatedShinyText from "@/components/ui/animated-shiny-text";
 import { BorderTrail } from "@/components/ui/border-trail";
-import ImageGlow from "react-image-glow";
+import { useEffect, useRef } from "react";
 
 const LandingPage = () => {
+  //const imageRef = useRef(null);
+
+  // useEffect(() => {
+  //   const imageElement = imageRef.current;
+
+  //   const handleScroll = () => {
+  //     const scrollPosition = window.scrollY;
+  //     const scrollThreshold = 100;
+
+  //     if (scrollPosition > scrollThreshold) {
+  //       imageElement.classList.add("scrolled");
+  //     }
+  //   };
+
+  //   window.addEventListener("scroll", handleScroll);
+  // }, []);
+
+  // const imageRef = useRef(null);
+
+  // useEffect(() => {
+  //   const imageElement = imageRef.current;
+
+  //   const handleScroll = () => {
+  //     const scrollPosition = window.scrollY;
+  //     const scrollThreshold = 100;
+
+  //     if (imageElement) {
+  //       if (scrollPosition > scrollThreshold) {
+  //         imageElement.classList.add("scrolled");
+  //       } else {
+  //         imageElement.classList.remove("scrolled");
+  //       }
+  //     }
+  //   };
+
+  //   window.addEventListener("scroll", handleScroll);
+
+  //   // Cleanup the event listener on component unmount
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
+  const imageRef = useRef(null);
+  const sparkleContainerRef = useRef(null);
+
+  const createSparkles = () => {
+    if (!sparkleContainerRef.current) return;
+
+    // Clear existing sparkles
+    sparkleContainerRef.current.innerHTML = "";
+
+    // Create new sparkles
+    const sparkleCount = 15;
+    for (let i = 0; i < sparkleCount; i++) {
+      const sparkle = document.createElement("div");
+      sparkle.className = "sparkle-particle";
+      sparkle.style.left = `${Math.random() * 100}%`;
+      sparkle.style.top = `${Math.random() * 100}%`;
+      sparkle.style.animationDelay = `${Math.random() * 0.3}s`;
+      sparkleContainerRef.current.appendChild(sparkle);
+    }
+  };
+
+  useEffect(() => {
+    const imageElement = imageRef.current;
+
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const scrollThreshold = 300;
+
+      if (imageElement) {
+        if (scrollPosition > scrollThreshold) {
+          imageElement.classList.add("scrolled");
+          createSparkles();
+        } else {
+          imageElement.classList.remove("scrolled");
+          if (sparkleContainerRef.current) {
+            sparkleContainerRef.current.innerHTML = "";
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
   return (
     <main className="flex flex-col gap-10 sm:ga-20 py-10 sm:py-20">
       <section className="text-center">
@@ -30,15 +117,19 @@ const LandingPage = () => {
                 gradient-title text-4xl font-extrabold 
                  sm:text-6xl lg:text-8xl tracking-tighter py-4 gap-0"
         >
-          <img
-            src="./Logo.png"
-            alt="test logo"
-            className="h-14 sm:h-24 lg:h-32"
-          />
+          <div className="">
+            <img
+              src="./Logo.png"
+              alt="test logo"
+              className="h-14 sm:h-24 lg:h-32"
+            />
+          </div>
+
           <span>Shape Your Career With Us!</span>
         </h1>
-        <p className="text-gray-300 sm:mt-4 text-xs sm:text-xl">
-          Deadpool’s got your back-find your dream job with us today!
+        <p className="text-gray-300 sm:mt-4 text-xs sm:text-xl font-semibold tracking-wide drop-shadow-lg">
+          Let Deadpool handle the boring stuff—your dream job’s just a click
+          away!
         </p>
       </section>
       <div className="flex justify-center gap-4">
@@ -69,31 +160,50 @@ const LandingPage = () => {
           </CarouselContent>
         </Carousel>
       </div>
-
-      <img src="/deadpoolbanner.png" alt="banner pool" />
-
+      {/* <div className="deadpool-rotate-wrapper mt-5 md:mt-0">
+        <div ref={imageRef} className="deadpool-rotate">
+          <img src="/deadpoolbanner.png" alt="banner pool" />
+        </div>
+      </div> */}
+      <div className="deadpool-rotate-wrapper mt-5 md:mt-0">
+        <div ref={imageRef} className="deadpool-rotate">
+          <img src="/deadpoolbanner.png" alt="banner pool" />
+          <div ref={sparkleContainerRef} className="sparkle-container" />
+        </div>
+      </div>
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 tracking-normal ">
         <div className="relative h-full w-full overflow-hidden rounded-md border border-zinc-950/10 bg-white text-zinc-700 outline-none dark:border-zinc-50/20 dark:bg-zinc-950 dark:text-zinc-300">
           <Card>
             <CardHeader>
-              <CardTitle>For Job Seekers</CardTitle>
+              <CardTitle className="font-bold  bg-gradient-to-r from-gray-600 via-gray-700 to-gray-800 bg-clip-text text-transparent tracking-wide drop-shadow-md">
+                For Job Seekers
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <p>Search and apply for jobs ,track applications,and more...</p>
+              <p className=" tracking-tight bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-700 bg-clip-text text-transparent font-medium drop-shadow-md">
+                Search and apply for jobs ,track applications,and more...
+              </p>
             </CardContent>
           </Card>
+
           <BorderTrail
             className="bg-gradient-to-l from-red-200 via-red-500 to-red-200 dark:from-red-400 dark:via-red-500 dark:to-red-700"
             size={135}
           />
         </div>
-        <div className="relative h-full w-full overflow-hidden rounded-md border border-zinc-950/10 bg-white text-zinc-700 outline-none dark:border-zinc-50/20 dark:bg-zinc-950 dark:text-zinc-300">
+
+        <div className=" relative h-full w-full overflow-hidden rounded-md border border-zinc-950/10 bg-white text-zinc-700 outline-none dark:border-zinc-50/20 dark:bg-zinc-950 dark:text-zinc-300">
           <Card>
             <CardHeader>
-              <CardTitle> For Employers</CardTitle>
+              <CardTitle className="font-bold bg-gradient-to-r from-gray-600 via-gray-700 to-gray-800 bg-clip-text text-transparent tracking-wide drop-shadow-md">
+                For Employers
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <p>Post job,manage applications, and find the best candidate</p>
+              <p className="tracking-tight bg-gradient-to-r from-yellow-500 via-yellow-600 to-yellow-700 bg-clip-text text-transparent font-medium drop-shadow-md">
+                Post jobs, manage applications, and find the best candidates
+                with ease.
+              </p>
             </CardContent>
           </Card>
           <BorderTrail
@@ -119,12 +229,12 @@ const LandingPage = () => {
         {faq.map(({ id, heading, question, answer }) => {
           return (
             <AccordionItem key={id} value={heading} className="py-2">
-              <AccordionTrigger className="w-full py-0.5 text-left text-zinc-950 dark:text-zinc-50">
+              <AccordionTrigger className="w-full py-0.5 text-left text-zinc-950 dark:text-zinc-50 ">
                 <div className="flex items-center">
                   <ChevronRight className="h-4 w-4 text-zinc-950 transition-transform duration-200 group-data-[expanded]:rotate-90 dark:text-zinc-50" />
                   <div className="ml-2 text-zinc-950 dark:text-zinc-50">
                     <AnimatedShinyText shimmerWidth={100} className="">
-                      <span>{question}</span>
+                      <span className="text-red-800">{question}</span>
                     </AnimatedShinyText>
                   </div>
                 </div>

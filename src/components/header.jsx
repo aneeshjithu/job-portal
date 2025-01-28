@@ -12,6 +12,7 @@ import {
 } from "@clerk/clerk-react";
 import ShinyButton from "./ui/shiny-button";
 import { BriefcaseBusiness, Heart, PenBox } from "lucide-react";
+import { ShimmerButton } from "./ui/shimmer-button";
 
 const Header = () => {
   const [showSignIn, setShowSignIn] = useState(false);
@@ -41,7 +42,18 @@ const Header = () => {
 
         <div className="flex gap-8">
           <SignedOut>
-            <ShinyButton variant="outline" onClick={() => setShowSignIn(true)}>
+            {/* <ShinyButton variant="blue" onClick={() => setShowSignIn(true)}> */}
+            {/* <ShimmerButton
+              className=" px-9 py-0 text-sm"
+              onClick={() => setShowSignIn(true)}
+            >
+              Login
+            </ShimmerButton> */}
+            <ShinyButton
+              variant="blue"
+              className=" px-8 py-2 text-sm"
+              onClick={() => setShowSignIn(true)}
+            >
               Login
             </ShinyButton>
           </SignedOut>
@@ -49,10 +61,14 @@ const Header = () => {
           <SignedIn>
             {user?.unsafeMetadata?.role === "recruiter" && (
               <Link to="/post-job">
-                <Button variant="destructive" className="rounded-full">
+                <ShinyButton className="cursor-pointer flex items-center px-4 py-2 text-sm bg-red-500 hover:bg-red-700">
+                  <PenBox size={20} className="mr-1 inline-block" />
+                  <span>Post Job</span>
+                </ShinyButton>
+                {/* <Button variant="destructive" className="rounded-full">
                   <PenBox size={20} className="mr-1" />
                   Post a Job
-                </Button>
+                </Button> */}
               </Link>
             )}
             <UserButton appearance={{ elements: { avatarBox: "w-10 h-10" } }}>

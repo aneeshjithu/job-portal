@@ -5,7 +5,7 @@ import { BarLoader } from "react-spinners";
 
 const MyJobs = () => {
   const { user, isLoaded } = useUser();
-  console.log(user);
+
   if (!isLoaded)
     return (
       <BarLoader className="mb-4" height={0.8} width={"100%"} color="#ff2c2c" />

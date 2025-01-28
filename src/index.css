@@ -89,3 +89,110 @@
 .wmde-markdown ul {
   list-style-type: disc !important;
 }
+/* 
+.deadpool-rotate {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+
+.sparkle-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 2;
+}
+
+
+.sparkle-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #fff;
+  border-radius: 40%;
+  opacity: 0;
+  animation: sparkle-pop 0.8s ease-out forwards;
+}
+
+@keyframes sparkle-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0) translateY(0);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1.2) translateY(-10px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0) translateY(-20px);
+  }
+}  */
+.deadpool-rotate-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.deadpool-rotate {
+  position: relative;
+  transition: filter 0.3s ease; /* For smooth star effect transitions */
+}
+
+/* Star-like sparkle effect */
+.deadpool-rotate.scrolled {
+  animation: star-sparkle 0.8s linear forwards;
+}
+
+@keyframes star-sparkle {
+  0% {
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  20% {
+    filter: drop-shadow(2px -3px 2px rgba(255, 223, 0, 0.8))
+      drop-shadow(-2px 1px 2px rgba(255, 94, 0, 0.8));
+  }
+  40% {
+    filter: drop-shadow(-3px 2px 3px rgba(255, 255, 255, 0.9))
+      drop-shadow(3px -1px 3px rgba(255, 165, 0, 0.7));
+  }
+  60% {
+    filter: drop-shadow(1px -2px 4px rgba(255, 255, 180, 0.95))
+      drop-shadow(-1px 3px 4px rgba(255, 100, 0, 0.6));
+  }
+  80% {
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8))
+      drop-shadow(0 0 3px rgba(255, 215, 0, 0.7));
+  }
+  100% {
+    filter: drop-shadow(0 0 0 transparent);
+  }
+}
+/* 
+@keyframes star-sparkle {
+  0% {
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  20% {
+    filter: drop-shadow(2px -3px 2px rgba(221, 11, 11, 0.8))
+      drop-shadow(-2px 1px 2px rgba(234, 6, 6, 0.8));
+  }
+  40% {
+    filter: drop-shadow(-3px 2px 3px rgba(233, 12, 12, 0.9))
+      drop-shadow(3px -1px 3px rgba(221, 9, 9, 0.7));
+  }
+  60% {
+    filter: drop-shadow(1px -2px 4px rgba(217, 6, 6, 0.95))
+      drop-shadow(-1px 3px 4px rgba(241, 6, 6, 0.6));
+  }
+  80% {
+    filter: drop-shadow(0 0 2px rgba(233, 17, 17, 0.8))
+      drop-shadow(0 0 3px rgba(230, 5, 5, 0.7));
+  }
+  100% {
+    filter: drop-shadow(0 0 0 transparent);
+  }
+} */

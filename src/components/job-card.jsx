@@ -13,6 +13,8 @@ import { Button } from "./ui/button";
 import useFetch from "@/hooks/use-fetch";
 import { deleteJob, saveJob } from "@/api/apiJobs";
 import { BarLoader } from "react-spinners";
+import { toast } from "@/hooks/use-toast";
+import { ToastAction } from "./ui/toast";
 const JobCard = ({
   job,
   isMyJob = false,
@@ -45,6 +47,16 @@ const JobCard = ({
     try {
       await fnDeleteJob();
       onJobSaved();
+      const toastMessage = "Job deleted successfully!";
+
+      // Show toast notification
+      toast({
+        variant: "destructive",
+        className:
+          "bg-red-600 px-4 py-2 bg-opacity-70 rounded-md text-sm  truncate flex items-center justify-center",
+        description: toastMessage,
+        duration: 1500,
+      });
     } catch (error) {
       console.error("Failed to delete job", error);
     }
@@ -52,10 +64,34 @@ const JobCard = ({
 
   const handleSaveJob = async () => {
     try {
+      // Call the API to save/remove the job
       await fnSavedJob({ job_id: job.id, user_id: user.id });
+
+      // Call the callback function (if provided)
       onJobSaved();
+
+      const toastMessage = !saved
+        ? "Job saved successfully!"
+        : "Job removed successfully!";
+
+      // Show toast notification
+      toast({
+        variant: "success",
+        className:
+          "bg-emerald-600 px-4 py-2 bg-opacity-70 rounded-md text-sm  truncate flex items-center justify-center",
+        description: toastMessage,
+        duration: 1000,
+      });
     } catch (error) {
       console.error("Failed to save job", error);
+
+      // Show error toast notification
+      toast({
+        variant: "destructive",
+        className:
+          "bg-red-600 px-4 py-2 rounded-md text-sm max-w-[200px] truncate flex items-center justify-center",
+        description: "Failed to save job. Please try again.",
+      });
     }
   };
 
@@ -66,7 +102,7 @@ const JobCard = ({
   }, [dataSavedJob]);
 
   return (
-    <Card className="flex flex-col">
+    <Card className="flex flex-col opa">
       {loadingDeleteJob && (
         <BarLoader
           className="mb-4"
@@ -97,7 +133,11 @@ const JobCard = ({
           </div>
         </div>
         <hr />
-        {job.description.substring(0, job.description.indexOf("."))}
+        {job.description?.length > 0
+          ? job.description.indexOf(".") > -1
+            ? job.description.substring(0, job.description.indexOf("."))
+            : job.description
+          : ""}
       </CardContent>
       <CardFooter className="flex-gap-2">
         <Link to={`/job/${job.id}`} className="flex-1">

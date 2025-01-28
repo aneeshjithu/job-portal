@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Drawer,
   DrawerClose,
@@ -20,6 +19,23 @@ import { BarLoader } from "react-spinners";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useFetch from "@/hooks/use-fetch";
 
+// const schema = z.object({
+//   experience: z.number().min(0, { message: "Experience must be at least 0" }),
+//   skills: z.string().min(1, { message: "Skills are required" }),
+//   education: z.enum(["Intermediate", "Graduate", "Post Graduate"], {
+//     message: "Education is required",
+//   }),
+//   resume: z
+//     .any()
+//     .refine(
+//       (file) =>
+//         (file[0] && file[0].type === "application/pdf") ||
+//         file[0].type === "application/msword",
+//       {
+//         message: "Resume must be a PDF or Word document",
+//       }
+//     ),
+// });
 const schema = z.object({
   experience: z.number().min(0, { message: "Experience must be at least 0" }),
   skills: z.string().min(1, { message: "Skills are required" }),
@@ -29,15 +45,23 @@ const schema = z.object({
   resume: z
     .any()
     .refine(
+      (file) => file && file.length > 0, // Ensure a file is selected
+      {
+        message: "Resume is required",
+      }
+    )
+    .refine(
       (file) =>
-        (file[0] && file[0].type === "application/pdf") ||
-        file[0].type === "application/msword",
+        file[0] &&
+        (file[0].type === "application/pdf" ||
+          file[0].type === "application/msword" ||
+          file[0].type ===
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"),
       {
         message: "Resume must be a PDF or Word document",
       }
     ),
 });
-
 const ApplyJobDrawer = ({ job, user, fetchJob, applied = false }) => {
   //react hook form
   const {

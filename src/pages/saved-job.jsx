@@ -41,7 +41,7 @@ const SavedJob = () => {
               />
             ))
           ) : (
-            <div>No jobs found</div>
+            <>No jobs found</>
           )}
         </div>
       )}

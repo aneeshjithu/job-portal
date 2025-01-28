@@ -22,6 +22,7 @@ import MDEditor from "@uiw/react-md-editor";
 import { Button } from "@/components/ui/button";
 import { addNewJob } from "@/api/apiJobs";
 import AddCompanyDrawer from "@/components/add-company-drawer";
+import { toast } from "@/hooks/use-toast";
 const schema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
   description: z.string().min(1, { message: "Description is required" }),
@@ -77,6 +78,16 @@ const PostJob = () => {
 
   useEffect(() => {
     if (dataCreateJob?.length > 0) {
+      const toastMessage = "Job posted successfully!";
+
+      // Show toast notification
+      toast({
+        variant: "success",
+        className:
+          "bg-emerald-600 px-4 py-2 bg-opacity-70 rounded-md text-sm  truncate flex items-center justify-center",
+        description: toastMessage,
+        duration: 1000,
+      });
       navigate("/jobs");
     }
   }, [createJobLoading]);

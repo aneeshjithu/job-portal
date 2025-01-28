@@ -23,7 +23,7 @@ export default supabaseClient;
 // // Create a single instance outside the function
 // let supabaseInstance = null;
 
-//  const supabaseClient = (supabaseAccessToken) => {
+// const supabaseClient = (supabaseAccessToken) => {
 //   if (!supabaseUrl || !supabaseKey) {
 //     throw new Error("Missing Supabase environment variables");
 //   }

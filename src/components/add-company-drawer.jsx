@@ -17,16 +17,47 @@ import useFetch from "@/hooks/use-fetch";
 import { BarLoader } from "react-spinners";
 import { useEffect, useState } from "react";
 
+// const schema = z.object({
+//   name: z.string().min(1, { message: "Company Name is required" }),
+//   logo: z
+//     .any()
+//     .refine(
+//       (file) =>
+//         (file[0] && file[0].type === "image/png") ||
+//         file[0].type === "image/jpeg",
+//       {
+//         message: "Only images are allowed",
+//       }
+//     ),
+// });
 const schema = z.object({
   name: z.string().min(1, { message: "Company Name is required" }),
   logo: z
     .any()
     .refine(
-      (file) =>
-        (file[0] && file[0].type === "image/png") ||
-        file[0].type === "image/jpeg",
+      (file) => {
+        if (!file || file.length === 0) {
+          return false; // No file provided
+        }
+        const firstFile = file[0];
+        return (
+          firstFile.type === "image/png" || firstFile.type === "image/jpeg"
+        );
+      },
       {
-        message: "Only images are allowed",
+        message: "Only PNG or JPEG images are allowed",
+      }
+    )
+    .refine(
+      (file) => {
+        if (!file || file.length === 0) {
+          return false; // No file provided
+        }
+        const firstFile = file[0];
+        return firstFile.size <= 5 * 1024 * 1024; // 5MB limit
+      },
+      {
+        message: "File size must be less than 5MB",
       }
     ),
 });
@@ -91,7 +122,7 @@ const AddCompanyDrawer = ({ fetchCompanies }) => {
                 {...register("name")}
               />
               {errors.name && (
-                <p className="text-red-500">{errors.name.message}</p>
+                <p className="text-red-500">{errors?.name?.message}</p>
               )}
 
               <Input
